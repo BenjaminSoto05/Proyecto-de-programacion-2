@@ -1,14 +1,15 @@
 from Ingrediente import Ingrediente
 
+
 class Stock:
     def __init__(self):
         self.lista_ingredientes = []
 
     def agregar_ingrediente(self, ingrediente):
-        pass
+        self.lista_ingredientes.append(ingrediente)
 
     def eliminar_ingrediente(self, nombre_ingrediente):
-        pass    
+        pass
 
     def verificar_stock(self):
         pass
@@ -18,4 +19,3 @@ class Stock:
 
     def obtener_elementos_menu(self):
         pass
-
