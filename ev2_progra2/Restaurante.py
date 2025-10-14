@@ -39,7 +39,6 @@ class AplicacionConPestanas(ctk.CTk):
         self.crear_pestanas()
 
     def actualizar_treeview(self):
-
         for item in self.tree.get_children():
             self.tree.delete(item)
 
@@ -110,9 +109,9 @@ class AplicacionConPestanas(ctk.CTk):
             ingrediente = Ingrediente(
                 nombre=nombre, unidad=unidad, cantidad=cantidad)
             self.stock.agregar_ingrediente(ingrediente)
+        self.actualizar_treeview()
         CTkMessagebox(title="Stock Actualizado",
                       message="Ingredientes agregados al stock correctamente.", icon="info")
-        self.actualizar_treeview()
 
     def cargar_csv(self):
         # Apertura normal del archivo
@@ -404,9 +403,6 @@ class AplicacionConPestanas(ctk.CTk):
         pass
 
     def eliminar_ingrediente(self):
-        pass
-
-    def actualizar_treeview(self):
         pass
 
 
