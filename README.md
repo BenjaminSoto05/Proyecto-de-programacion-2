@@ -1,3 +1,3 @@
 # Proyecto-de-programacion-2
 ## Subrama de *main* centrado en la elaboración del proyecto
-Espacio para el trabajo en conjunto del proyecto de **Programacion II**. De aqui naceran otras ramas en las cuales trabajaremos mediante objetivos en el codigo, terminados los objetivos y con una presente estabilidad, esta rama se migrara a la rama *main*.
+Espacio para el trabajo en conjunto del proyecto de **Programacion II**. Esta subrama esta hecha para agregar contenido a nuestro informe de LaTeX, mediante commits organizados y finalmente migrarlo a nuestra rama principal.
