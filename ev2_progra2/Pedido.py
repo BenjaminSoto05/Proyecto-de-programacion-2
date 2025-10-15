@@ -38,6 +38,6 @@ class Pedido:
 
     def calcular_total(self) -> float:
         total = 0.0
-        for menu in self.menus.values():
+        for menu in self.menus:
             total += menu.precio * menu.cantidad
         return total
