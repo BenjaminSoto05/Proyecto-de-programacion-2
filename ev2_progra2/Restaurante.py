@@ -304,6 +304,8 @@ class AplicacionConPestanas(ctk.CTk):
             for ing in menu_a_devolver.ingredientes:
                 self.stock.agregar_ingrediente(ing)
 
+        total = self.pedido.calcular_total()
+        self.label_total.configure(text=f"Total: ${total:.2f}")
         self.actualizar_treeview_stock()
         self.actualizar_treeview_pedido()
         self.on_tab_change()
