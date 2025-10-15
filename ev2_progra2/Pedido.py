@@ -4,8 +4,8 @@ from typing import List
 
 class Pedido:
     def __init__(self):
-        self.menus = {}
-        
+        self.menus = []
+
     def agregar_menu(self, menu: CrearMenu):
         ok = True
         for menu_exs in self.menus:
