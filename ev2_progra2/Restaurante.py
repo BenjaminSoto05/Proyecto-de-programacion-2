@@ -275,7 +275,7 @@ class AplicacionConPestanas(ctk.CTk):
         if suficiente_stock:
             for ingrediente_necesario in menu.ingredientes:
                 for ingrediente_stock in self.stock.lista_ingredientes:
-                    if ingrediente_necesario.nombre == ingrediente_stock.nombre:
+                    if ingrediente_necesario.nombre.upper() == ingrediente_stock.nombre.upper():
                         ingrediente_stock.cantidad = str(
                             int(ingrediente_stock.cantidad) - int(ingrediente_necesario.cantidad))
 
@@ -300,7 +300,11 @@ class AplicacionConPestanas(ctk.CTk):
             self.crear_tarjeta(menu, columna)
 
     def eliminar_menu(self):
-        pass
+        menu_id = self.treeview_menu.focus()
+        menu = self.treeview_menu.item(menu_id)["values"]
+        menu_nombre = menu[0]
+        self.pedido.eliminar_menu(menu_nombre)
+        self.actualizar_treeview_pedido()
 
     def generar_boleta(self):
         pass
