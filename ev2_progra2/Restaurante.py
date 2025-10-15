@@ -253,7 +253,7 @@ class AplicacionConPestanas(ctk.CTk):
         if suficiente_stock:
             for ingrediente_necesario in menu.ingredientes:
                 for ingrediente_stock in self.stock.lista_ingredientes:
-                    if ingrediente_necesario.nombre == ingrediente_stock.nombre:
+                    if ingrediente_necesario.nombre.upper() == ingrediente_stock.nombre.upper():
                         ingrediente_stock.cantidad = str(
                             int(ingrediente_stock.cantidad) - int(ingrediente_necesario.cantidad))
 
