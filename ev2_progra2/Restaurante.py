@@ -249,19 +249,7 @@ class AplicacionConPestanas(ctk.CTk):
                       command=self.generar_menus).pack(side="bottom", pady=10)
 
     def tarjeta_click(self, event, menu):
-        suficiente_stock = True
-        if self.stock.lista_ingredientes == []:
-            suficiente_stock = False
-        for ingrediente_necesario in menu.ingredientes:
-            for ingrediente_stock in self.stock.lista_ingredientes:
-                if ingrediente_necesario.nombre == ingrediente_stock.nombre:
-                    if int(ingrediente_stock.cantidad) < int(ingrediente_necesario.cantidad):
-                        suficiente_stock = False
-                        break
-            if not suficiente_stock:
-                break
-
-        if suficiente_stock:
+        if self.stock.verificar_stock(menu):
             for ingrediente_necesario in menu.ingredientes:
                 for ingrediente_stock in self.stock.lista_ingredientes:
                     if ingrediente_necesario.nombre.upper() == ingrediente_stock.nombre.upper():

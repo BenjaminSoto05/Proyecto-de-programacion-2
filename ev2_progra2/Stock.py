@@ -16,26 +16,26 @@ class Stock:
         # Si no lo encontró en el bucle, lo agrega como nuevo
         self.lista_ingredientes.append(nuevo_ingrediente)
 
-    def descontar_ingrediente(self, nombre: str, cantidad: float) -> bool:
-        for i, ingrediente in enumerate(self.lista_ingredientes):
-            if ingrediente.nombre.lower() == nombre.lower():
-                if self.lista_ingredientes[i].cantidad >= cantidad:
-                    self.lista_ingredientes[i].cantidad -= cantidad
-                    # Opcional: eliminar si la cantidad llega a 0
-                    if self.lista_ingredientes[i].cantidad == 0:
-                        self.lista_ingredientes.pop(i)
-                    return True
-                else:
-                    return False  # No hay suficiente stock
-        return False  # El ingrediente no se encontró
-
     def eliminar_ingrediente(self, nombre_ingrediente: str):
         self.lista_ingredientes = [
             ing for ing in self.lista_ingredientes if ing.nombre.lower() != nombre_ingrediente.lower()
         ]
 
-    def verificar_stock(self):
-        pass
+    def verificar_stock(self, menu):
+        # Definición True por default: Se define False si no se cumplen las condiciones
+        suficiente_stock = True
+        if self.lista_ingredientes == []:
+            suficiente_stock = False
+        for ingrediente_necesario in menu.ingredientes:
+            for ingrediente_stock in self.lista_ingredientes:
+                if ingrediente_necesario.nombre == ingrediente_stock.nombre:
+                    if int(ingrediente_stock.cantidad) < int(ingrediente_necesario.cantidad):
+                        print("Nohay")
+                        return False
+            if not suficiente_stock:
+                break
+        if suficiente_stock == True:
+            return True
 
     def actualizar_stock(self, nombre_ingrediente, nueva_cantidad):
         pass
