@@ -3,8 +3,8 @@ from typing import List
 
 class Pedido:
     def __init__(self):
-        self.menus = []  
-
+        self.menus = {}
+        
     def agregar_menu(self, menu: CrearMenu):
         if menu.nombre in self.menus:
             self.menus[menu.nombre].cantidad += 1

@@ -16,7 +16,7 @@ def get_default_menus() -> List[IMenu]:
             "Pepsi",
             [Ingrediente("Pepsi", "unid", 1)],
             precio=1100,
-            icono_path="IMG/icono_cola_lata_64x64.png", 
+            icono_path="IMG/icono_cola_64x64.png", 
         ),
         CrearMenu(
             "Completo",
@@ -47,7 +47,6 @@ def get_default_menus() -> List[IMenu]:
                 Ingrediente("azucar flor", "unid", 1),
             ],
             precio=2000,
-            # Asigna un ícono genérico o crea uno si lo tienes
             icono_path="IMG/icono_empanada_queso_64x64.png", 
         ),
         CrearMenu(
@@ -58,7 +57,6 @@ def get_default_menus() -> List[IMenu]:
                 Ingrediente("porcion de aceite", "unid", 1),
             ],
             precio=2800,
-            # Asigna un ícono genérico
             icono_path="IMG/icono_chorrillana_64x64.png",
         ),
         CrearMenu(
@@ -69,7 +67,6 @@ def get_default_menus() -> List[IMenu]:
                 Ingrediente("zanahoria rallada", "unid", 1),
             ],
             precio=1500,
-            # Asigna un ícono genérico
             icono_path="IMG/icono_cola_64x64.png",
         ),
     ]
