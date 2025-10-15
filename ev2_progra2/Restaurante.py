@@ -281,8 +281,8 @@ class AplicacionConPestanas(ctk.CTk):
 
             self.pedido.agregar_menu(menu)
             self.actualizar_treeview_pedido()
-            # total = self.pedido.calcular_total()
-            # self.label_total.configure(text=f"Total: ${total:.2f}")
+            total = self.pedido.calcular_total()
+            self.label_total.configure(text=f"Total: ${total:.2f}")
         else:
             CTkMessagebox(title="Stock Insuficiente",
                           message=f"No hay suficientes ingredientes para preparar el menú '{menu.nombre}'.", icon="warning")
