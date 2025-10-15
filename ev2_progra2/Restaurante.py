@@ -281,8 +281,8 @@ class AplicacionConPestanas(ctk.CTk):
 
             self.pedido.agregar_menu(menu)
             self.actualizar_treeview_pedido()
-            total = self.pedido.calcular_total()
-            self.label_total.configure(text=f"Total: ${total:.2f}")
+            # total = self.pedido.calcular_total()
+            # self.label_total.configure(text=f"Total: ${total:.2f}")
         else:
             CTkMessagebox(title="Stock Insuficiente",
                           message=f"No hay suficientes ingredientes para preparar el menú '{menu.nombre}'.", icon="warning")
@@ -293,7 +293,11 @@ class AplicacionConPestanas(ctk.CTk):
         return icono_menu
 
     def generar_menus(self):
-        pass
+        listaMenus = get_default_menus()
+        columna = 0
+        for menu in listaMenus:
+            columna += 1
+            self.crear_tarjeta(menu, columna)
 
     def eliminar_menu(self):
         pass
@@ -336,10 +340,10 @@ class AplicacionConPestanas(ctk.CTk):
             frame_inferior, text="Generar Boleta", command=self.generar_boleta)
         self.boton_generar_boleta.pack(side="bottom", pady=10)
 
-    def crear_tarjeta(self, menu):
-        num_tarjetas = len(self.menus_creados)
+    def crear_tarjeta(self, menu, columna):
+        # num_tarjetas = len(self.menus_creados)
         fila = 0
-        columna = num_tarjetas
+        # columna = num_tarjetas
 
         tarjeta = ctk.CTkFrame(
             tarjetas_frame,

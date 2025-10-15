@@ -1,14 +1,18 @@
-from ElementoMenu import CrearMenu 
+from ElementoMenu import CrearMenu
 from typing import List
+
 
 class Pedido:
     def __init__(self):
-        self.menus = []  
+        self.menus = []
 
     def agregar_menu(self, menu: CrearMenu):
-        if menu.nombre in self.menus:
-            self.menus[menu.nombre].cantidad += 1
-        else:
+        ok = True
+        for menu_exs in self.menus:
+            if menu.nombre == menu_exs.nombre:
+                menu_exs.cantidad += 1
+                ok = False
+        if ok:
             # Creamos una copia para no modificar el menú original del catálogo
             nuevo_menu = CrearMenu(
                 nombre=menu.nombre,
@@ -17,7 +21,7 @@ class Pedido:
                 icono_path=menu.icono_path,
                 cantidad=1
             )
-            self.menus[menu.nombre] = nuevo_menu
+            self.menus.append(nuevo_menu)
 
     def eliminar_menu(self, nombre_menu: str):
         if nombre_menu in self.menus:
