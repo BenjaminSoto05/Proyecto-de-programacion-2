@@ -6,7 +6,7 @@ from IMenu import IMenu
 
 
 @dataclass
-class CrearMenu(IMenu):
+class CrearMenu():
     nombre: str
     ingredientes: List[Ingrediente]
     precio: float = 0.0
@@ -24,3 +24,8 @@ class CrearMenu(IMenu):
             if not ok:
                 return False
         return True
+
+    def __post_init__(self):
+        if not isinstance(self, IMenu):
+            raise TypeError(
+                f"La clase de menú no implementa la interfaz diseñada.")
