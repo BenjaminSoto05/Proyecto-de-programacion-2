@@ -68,12 +68,12 @@ class AplicacionConPestanas(ctk.CTk):
         self.tab5 = self.tabview.add("Boleta")
 
         self.configurar_pestana_Stock()
-        self.configurar_pestana2()
-        self.configurar_pestana3()
+        self.configurar_pestana_pedido()
+        self.configurar_pestana_csv()
         self._configurar_pestana_crear_menu()
         self._configurar_pestana_ver_boleta()
 
-    def configurar_pestana3(self):  # pestaña CSV
+    def configurar_pestana_csv(self):  # pestaña CSV
         label = ctk.CTkLabel(self.tab3, text="Carga de archivo CSV")
         label.pack(pady=20)
         boton_cargar_csv = ctk.CTkButton(
@@ -310,7 +310,7 @@ class AplicacionConPestanas(ctk.CTk):
     def generar_boleta(self):
         pass
 
-    def configurar_pestana2(self):
+    def configurar_pestana_pedido(self):
         frame_superior = ctk.CTkFrame(self.tab2)
         frame_superior.pack(side="top", fill="both",
                             expand=True, padx=10, pady=10)

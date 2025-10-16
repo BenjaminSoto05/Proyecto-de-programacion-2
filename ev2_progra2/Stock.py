@@ -63,6 +63,6 @@ class Stock:
         lista_para_comprar = []
         for ingrediente in self.lista_ingredientes:
             # Aplica la lógica solo para ingredientes contados por unidad
-            if ingrediente.unidad == "unid" and ingrediente.cantidad <= umbral:
+            if ingrediente.unidad == "unid" and int(ingrediente.cantidad) <= umbral:
                 lista_para_comprar.append(ingrediente)
         return lista_para_comprar
