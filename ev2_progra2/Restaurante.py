@@ -108,17 +108,35 @@ class AplicacionConPestanas(ctk.CTk):
         self.actualizar_treeview_stock()
 
     def cargar_csv(self):
-        # Apertura normal del archivo
-        path = filedialog.askopenfile(
-            filetypes=[("CSV files", "*.csv"), ("All files", "*.*")])
-        self.df_csv = pd.read_csv(path, encoding="UTF-8-SIG")
-        # Extracción del BOM
-        for columna in self.df_csv.columns:
-            new_column_name = re.sub(r"[^0-9a-zA-Z.,-/_ ]", "", columna)
-            self.df_csv.rename(
-                columns={columna: new_column_name}, inplace=True)
-        # Muestra en tabla
-        self.mostrar_dataframe_en_tabla(self.df_csv)
+        try:
+            # Apertura normal del archivo
+            path = filedialog.askopenfile(
+                filetypes=[("CSV files", "*.csv"), ("All files", "*.*")])
+            self.df_csv = pd.read_csv(path, encoding="UTF-8-SIG")
+            # Extracción del BOM
+            for columna in self.df_csv.columns:
+                new_column_name = re.sub(r"[^0-9a-zA-Z.,-/_ ]", "", columna)
+                self.df_csv.rename(
+                    columns={columna: new_column_name}, inplace=True)
+            # Verificación de estándares del CSV
+            if len(self.df_csv.columns) != 3:
+                raise Exception
+            elif self.df_csv.columns[0].upper() != "nombre".upper():
+                raise Exception
+            elif self.df_csv.columns[1].upper() != "unidad".upper():
+                raise Exception
+            elif self.df_csv.columns[2].upper() != "cantidad".upper():
+                raise Exception
+            # Muestra en tabla
+            self.mostrar_dataframe_en_tabla(self.df_csv)
+        # Error de archivo
+        except UnicodeDecodeError:
+            CTkMessagebox(
+                title="Error", message="Error al cargar el archivo.", icon="warning")
+            return
+        except:
+            CTkMessagebox(
+                title="Error", message="El archivo no cumple con los estándares de ingreso\nde stock.", icon="warning")
 
     def mostrar_dataframe_en_tabla(self, df):
         if self.tabla_csv:
