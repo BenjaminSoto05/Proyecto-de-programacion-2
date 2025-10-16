@@ -24,8 +24,3 @@ class CrearMenu():
             if not ok:
                 return False
         return True
-
-    def __post_init__(self):
-        if not isinstance(self, IMenu):
-            raise TypeError(
-                f"La clase de menú no implementa la interfaz diseñada.")
