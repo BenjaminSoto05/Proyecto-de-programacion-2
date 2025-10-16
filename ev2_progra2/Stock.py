@@ -27,10 +27,10 @@ class Stock:
         if self.lista_ingredientes == []:
             suficiente_stock = False
         for ingrediente_necesario in menu.ingredientes:
+            print(ingrediente_necesario)
             for ingrediente_stock in self.lista_ingredientes:
                 if ingrediente_necesario.nombre == ingrediente_stock.nombre:
                     if int(ingrediente_stock.cantidad) < int(ingrediente_necesario.cantidad):
-                        print("Nohay")
                         return False
             if not suficiente_stock:
                 break
@@ -43,11 +43,11 @@ class Stock:
         Devuelve True si lo encontró y actualizó, False en caso contrario.
         """
         for ingrediente in self.lista_ingredientes:
-        # Busca el ingrediente ignorando mayúsculas/minúsculas
+            # Busca el ingrediente ignorando mayúsculas/minúsculas
             if ingrediente.nombre.lower() == nombre_ingrediente.lower():
                 ingrediente.cantidad = nueva_cantidad
-                return True # Indica que la operación fue exitosa
-        return False # Indica que no se encontró el ingrediente
+                return True  # Indica que la operación fue exitosa
+        return False  # Indica que no se encontró el ingrediente
 
     def obtener_elementos_menu(self, umbral: int = 5):
         """
@@ -62,7 +62,7 @@ class Stock:
         """
         lista_para_comprar = []
         for ingrediente in self.lista_ingredientes:
-        # Aplica la lógica solo para ingredientes contados por unidad
+            # Aplica la lógica solo para ingredientes contados por unidad
             if ingrediente.unidad == "unid" and ingrediente.cantidad <= umbral:
                 lista_para_comprar.append(ingrediente)
         return lista_para_comprar
