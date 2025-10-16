@@ -47,9 +47,10 @@ class AplicacionConPestanas(ctk.CTk):
     def on_tab_change(self):
         selected_tab = self.tabview.get()
         if selected_tab == "carga de ingredientes":
-            print('carga de ingredientes')
+            print('Carga de ingredientes')
         if selected_tab == "Stock":
             self.actualizar_treeview_stock()
+            print('Stock')
         if selected_tab == "Pedido":
             self.actualizar_treeview_stock()
             print('pedido')
@@ -60,7 +61,7 @@ class AplicacionConPestanas(ctk.CTk):
             self.actualizar_treeview_stock()
             print('Boleta')
 
-    def crear_pestanas(self):
+    def crear_pestanas(self): # Why tab 1 != carga de ingredientes?
         self.tab3 = self.tabview.add("carga de ingredientes")
         self.tab1 = self.tabview.add("Stock")
         self.tab4 = self.tabview.add("Carta restorante")
@@ -184,7 +185,7 @@ class AplicacionConPestanas(ctk.CTk):
             CTkMessagebox(
                 title="Error", message=f"No se pudo generar/mostrar la carta.\n{e}", icon="warning")
 
-    def _configurar_pestana_ver_boleta(self):
+    def _configurar_pestana_ver_boleta(self): #------------
         contenedor = ctk.CTkFrame(self.tab5)
         contenedor.pack(expand=True, fill="both", padx=10, pady=10)
 
@@ -261,7 +262,7 @@ class AplicacionConPestanas(ctk.CTk):
                         ingrediente_stock.cantidad = str(
                             int(ingrediente_stock.cantidad) - int(ingrediente_necesario.cantidad))
 
-            self.pedido.agregar_menu(menu)
+            self.pedido.agregar_menu(menu) # Aqui aplica los atributos del pedido
             self.actualizar_treeview_pedido()
             total = self.pedido.calcular_total()
             self.label_total.configure(text=f"Total: ${total:.2f}")
@@ -304,7 +305,8 @@ class AplicacionConPestanas(ctk.CTk):
         self.on_tab_change()
 
     def generar_boleta(self):
-        pass
+        boleta = BoletaFacade(self, self.pedido)
+        boleta.generar_boleta()
 
     def configurar_pestana2(self):
         frame_superior = ctk.CTkFrame(self.tab2)
@@ -336,6 +338,8 @@ class AplicacionConPestanas(ctk.CTk):
         self.treeview_pedido.heading("Cantidad", text="Cantidad")
         self.treeview_pedido.heading("Precio Unitario", text="Precio Unitario")
         self.treeview_pedido.pack(expand=True, fill="both", padx=10, pady=10)
+
+#-------------------------------------------------- Generar Boleta Button
 
         self.boton_generar_boleta = ctk.CTkButton(
             frame_inferior, text="Generar Boleta", command=self.generar_boleta)
@@ -376,6 +380,8 @@ class AplicacionConPestanas(ctk.CTk):
             except Exception as e:
                 print(f"No se pudo cargar la imagen '{menu.icono_path}': {e}")
 
+
+# Letrillas Cards
         texto_label = ctk.CTkLabel(
             tarjeta,
             text=f"{menu.nombre}",
