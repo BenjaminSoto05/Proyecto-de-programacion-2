@@ -6,14 +6,14 @@ class Stock:
         self.lista_ingredientes = []
 
     def agregar_ingrediente(self, nuevo_ingrediente: Ingrediente):
-        for i, existente in enumerate(self.lista_ingredientes):
-            # Busca por nombre y unidad
-            if existente.nombre.lower() == nuevo_ingrediente.nombre.lower() and existente.unidad == nuevo_ingrediente.unidad:
-                self.lista_ingredientes[i].cantidad = int(
-                    self.lista_ingredientes[i].cantidad) + int(nuevo_ingrediente.cantidad)
-                return  # Termina la función
+        nombre_normalizado_nuevo = nuevo_ingrediente.nombre.replace(" ", "").lower()
+        for ingrediente_existente in self.lista_ingredientes:
+            nombre_normalizado_existente = ingrediente_existente.nombre.replace(" ", "").lower()
 
-        # Si no lo encontró en el bucle, lo agrega como nuevo
+            if nombre_normalizado_existente == nombre_normalizado_nuevo:
+                ingrediente_existente.cantidad += nuevo_ingrediente.cantidad
+                return  
+       
         self.lista_ingredientes.append(nuevo_ingrediente)
 
     def eliminar_ingrediente(self, nombre_ingrediente: str):
@@ -46,8 +46,8 @@ class Stock:
             # Busca el ingrediente ignorando mayúsculas/minúsculas
             if ingrediente.nombre.lower() == nombre_ingrediente.lower():
                 ingrediente.cantidad = nueva_cantidad
-                return True  # Indica que la operación fue exitosa
-        return False  # Indica que no se encontró el ingrediente
+                return True  
+        return False 
 
     def obtener_elementos_menu(self, umbral: int = 5):
         """
