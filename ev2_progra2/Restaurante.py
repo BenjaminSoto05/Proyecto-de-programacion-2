@@ -235,7 +235,7 @@ class AplicacionConPestanas(ctk.CTk):
         ctk.CTkLabel(frame_formulario, text="Unidad:").grid(
             row=0, column=2, padx=5, pady=5)
         self.combo_unidad = ctk.CTkComboBox(
-            frame_formulario, values=["unid", "kg"])
+            frame_formulario, values=["unid", "kg"],state="readonly")
         self.combo_unidad.set("unid")
         self.combo_unidad.grid(row=0, column=3, padx=5, pady=5)
 
@@ -419,12 +419,24 @@ class AplicacionConPestanas(ctk.CTk):
             return False
 
     def validar_cantidad(self, cantidad):
-        if cantidad.isdigit():
-            return True
-        else:
-            CTkMessagebox(title="Error de Validación",
-                          message="La cantidad debe ser un número entero positivo.", icon="warning")
+        # No debe ser un numero vacio
+        if not cantidad.strip():
+            CTkMessagebox(title="Error de Cantidad", message="El campo de cantidad no puede estar vacío.", icon="cancel")
             return False
+
+        # Debe ser un número válido
+        try:
+            cantidad_num = float(cantidad)
+        except ValueError:
+            CTkMessagebox(title="Error de Cantidad", message="La cantidad debe ser un número válido (ej: 10 o 5.5).", icon="cancel")
+            return False
+
+        # Debe ser un numero mayor a 0
+        if cantidad_num <= 0:
+            CTkMessagebox(title="Error de Cantidad", message="La cantidad debe ser un número mayor que cero.", icon="cancel")
+            return False
+
+        return True
 
     def ingresar_ingrediente(self):
         nombre = self.entry_nombre.get()
