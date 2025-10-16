@@ -4,8 +4,8 @@ from typing import List
 
 class Pedido:
     def __init__(self):
-        self.menus = {}
-        
+        self.menus = []
+
     def agregar_menu(self, menu: CrearMenu):
         ok = True
         for menu_exs in self.menus:
@@ -24,11 +24,14 @@ class Pedido:
             self.menus.append(nuevo_menu)
 
     def eliminar_menu(self, nombre_menu: str):
-        if nombre_menu in self.menus:
-            if self.menus[nombre_menu].cantidad > 1:
-                self.menus[nombre_menu].cantidad -= 1
-            else:
-                del self.menus[nombre_menu]
+        i = 0
+        for menu in self.menus:
+            if nombre_menu == menu.nombre:
+                if menu.cantidad > 1:
+                    menu.cantidad -= 1
+                else:
+                    del self.menus[i]
+            i += 1
 
     def get_lista_menus(self) -> List[CrearMenu]:
         return list(self.menus.values())
