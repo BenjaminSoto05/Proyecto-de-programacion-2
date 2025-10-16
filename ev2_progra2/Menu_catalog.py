@@ -70,6 +70,12 @@ def get_default_menus() -> List[IMenu]:
             precio=1500,
             icono_path="IMG/icono_cola_64x64.png",
         ),
+        CrearMenu(
+            "Coca-cola",
+            [Ingrediente("coca cola", "unid", 1),],
+            precio=1000,
+            icono_path="IMG/icono_cola_lata_64x64.png"
+        )
     ]
     for menu in listaMenus:
         if isinstance(menu, IMenu) == False:
