@@ -37,8 +37,32 @@ class Stock:
         if suficiente_stock == True:
             return True
 
-    def actualizar_stock(self, nombre_ingrediente, nueva_cantidad):
-        pass
+    def actualizar_stock(self, nombre_ingrediente: str, nueva_cantidad: float):
+        """
+        Busca un ingrediente por su nombre y actualiza su cantidad.
+        Devuelve True si lo encontró y actualizó, False en caso contrario.
+        """
+        for ingrediente in self.lista_ingredientes:
+        # Busca el ingrediente ignorando mayúsculas/minúsculas
+            if ingrediente.nombre.lower() == nombre_ingrediente.lower():
+                ingrediente.cantidad = nueva_cantidad
+                return True # Indica que la operación fue exitosa
+        return False # Indica que no se encontró el ingrediente
 
-    def obtener_elementos_menu(self):
-        pass
+    def obtener_elementos_menu(self, umbral: int = 5):
+        """
+        Revisa el inventario y devuelve una lista de los ingredientes
+        cuya cantidad es igual o menor al umbral especificado.
+
+        Args:
+            umbral (int): La cantidad mínima que activa la alerta de bajo stock.
+
+        Returns:
+            list: Una lista de objetos Ingrediente que necesitan ser repuestos.
+        """
+        lista_para_comprar = []
+        for ingrediente in self.lista_ingredientes:
+        # Aplica la lógica solo para ingredientes contados por unidad
+            if ingrediente.unidad == "unid" and ingrediente.cantidad <= umbral:
+                lista_para_comprar.append(ingrediente)
+        return lista_para_comprar

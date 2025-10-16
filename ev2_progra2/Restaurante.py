@@ -242,11 +242,16 @@ class AplicacionConPestanas(ctk.CTk):
         self.treeview_stock.heading("Cantidad", text="Cantidad")
         self.treeview_stock.pack(side="top", fill="both", expand=True)
 
+        self.treeview_stock.bind("<Double-1>", self.editar_cantidad_stock)
+
         ctk.CTkButton(frame_stock, text="Eliminar Ingrediente Seleccionado",
                       command=self.eliminar_ingrediente).pack(side="bottom", pady=10)
 
         ctk.CTkButton(self.tabview.tab("Stock"), text="Generar Menús Disponibles",
                       command=self.generar_menus).pack(side="bottom", pady=10)
+        
+        ctk.CTkButton(self.tabview.tab("Stock"),text="Generar Lista de Compras (Bajo Stock)",
+                      command=self.mostrar_lista_compras).pack(side="bottom", pady=10)
 
     def tarjeta_click(self, event, menu):
         if self.stock.verificar_stock(menu):
@@ -429,14 +434,56 @@ class AplicacionConPestanas(ctk.CTk):
         self.stock.eliminar_ingrediente(nombre_a_eliminar)
         self.actualizar_treeview_stock()
 
-    def actualizar_treeview_pedido(self):
-        for item in self.treeview_pedido.get_children():
-            self.treeview_pedido.delete(item)
+    def editar_cantidad_stock(self, event):
+        # 1. Identifica la fila en la que se hizo doble clic
+        item_seleccionado = self.treeview_stock.focus()
+        if not item_seleccionado:
+            return 
 
-        for menu in self.pedido.menus:
-            self.treeview_pedido.insert("", "end", values=(
-                menu.nombre, menu.cantidad, f"${menu.precio:.2f}"))
+        # 2. Obtiene los detalles del ingrediente de esa fila
+        detalles_item = self.treeview_stock.item(item_seleccionado)
+        nombre_ingrediente = detalles_item['values'][0]
+        cantidad_actual = detalles_item['values'][2]
 
+        # 3. Abre una ventana emergente para pedir la nueva cantidad
+        dialogo = ctk.CTkInputDialog(
+            text=f"Ingrese la nueva cantidad para '{nombre_ingrediente}':",
+            title="Actualizar Stock"
+            )
+    
+        nueva_cantidad_str = dialogo.get_input()
+
+        # 4. Si el usuario ingresó un valor y no canceló
+        if nueva_cantidad_str:
+            try:
+                nueva_cantidad = float(nueva_cantidad_str)
+                if nueva_cantidad < 0: # No permitir cantidades negativas
+                    raise ValueError
+            
+                # 5. Llama a la función de la lógica del Stock
+                self.stock.actualizar_stock(nombre_ingrediente, nueva_cantidad)
+            
+                # 6. Refresca la tabla para mostrar el cambio
+                self.actualizar_treeview_stock()
+
+            except (ValueError, TypeError):
+                CTkMessagebox(title="Error", message="Por favor, ingrese un número válido y positivo.", icon="cancel")
+
+    def mostrar_lista_compras(self):
+        # 1. Llama a la nueva función de la lógica del Stock
+        ingredientes_bajos = self.stock.obtener_elementos_menu(umbral=5) # Puedes cambiar el umbral
+
+        # 2. Prepara el mensaje para el usuario
+        if not ingredientes_bajos:
+            mensaje = "¡Excelente! No hay ingredientes con bajo stock."
+        else:
+            mensaje = "Se recomienda comprar los siguientes ingredientes:\n\n"
+            # Formatea la lista para que sea fácil de leer
+            for ingrediente in ingredientes_bajos:
+                mensaje += f"- {ingrediente.nombre} (Quedan: {ingrediente.cantidad})\n"
+
+        # 3. Muestra el resultado en una ventana de información
+        CTkMessagebox(title="Lista de Compras", message=mensaje, icon="info")
 
 if __name__ == "__main__":
     import customtkinter as ctk
