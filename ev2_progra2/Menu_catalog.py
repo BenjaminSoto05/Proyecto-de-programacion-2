@@ -4,8 +4,9 @@ from ElementoMenu import CrearMenu
 from Ingrediente import Ingrediente
 from IMenu import IMenu
 
+
 def get_default_menus() -> List[IMenu]:
-    return [
+    listaMenus = [
         CrearMenu(
             "Papas fritas",
             [Ingrediente("papas", "unid", 5)],
@@ -16,7 +17,7 @@ def get_default_menus() -> List[IMenu]:
             "Pepsi",
             [Ingrediente("Pepsi", "unid", 1)],
             precio=1100,
-            icono_path="IMG/icono_cola_64x64.png", 
+            icono_path="IMG/icono_cola_64x64.png",
         ),
         CrearMenu(
             "Completo",
@@ -47,7 +48,7 @@ def get_default_menus() -> List[IMenu]:
                 Ingrediente("azucar flor", "unid", 1),
             ],
             precio=2000,
-            icono_path="IMG/icono_empanada_queso_64x64.png", 
+            icono_path="IMG/icono_empanada_queso_64x64.png",
         ),
         CrearMenu(
             "Pollo frito",
@@ -76,3 +77,9 @@ def get_default_menus() -> List[IMenu]:
             icono_path="IMG/icono_cola_lata_64x64.png"
         )
     ]
+    for menu in listaMenus:
+        if isinstance(menu, IMenu) == False:
+            raise TypeError(
+                f"La clase de menú no implementa la interfaz diseñada.")
+        else:
+            return listaMenus
