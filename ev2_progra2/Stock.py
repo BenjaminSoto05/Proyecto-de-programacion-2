@@ -6,14 +6,21 @@ class Stock:
         self.lista_ingredientes = []
 
     def agregar_ingrediente(self, nuevo_ingrediente: Ingrediente):
+        # Normaliza el nombre del nuevo ingrediente para una comparación que no distinga mayúsculas ni espacios.
         nombre_normalizado_nuevo = nuevo_ingrediente.nombre.replace(" ", "").lower()
+
+        # Itera sobre la lista de ingredientes existentes para buscar duplicados.
         for ingrediente_existente in self.lista_ingredientes:
+            # Normaliza el nombre del ingrediente existente para asegurar una comparación justa.
             nombre_normalizado_existente = ingrediente_existente.nombre.replace(" ", "").lower()
 
+            # Si se encuentra una coincidencia, actualiza la cantidad del ingrediente existente.
             if nombre_normalizado_existente == nombre_normalizado_nuevo:
-                ingrediente_existente.cantidad += nuevo_ingrediente.cantidad
-                return  
-       
+                ingrediente_existente.cantidad = float(ingrediente_existente.cantidad)
+                return
+
+        # Si el bucle termina sin encontrar una coincidencia, agrega el ítem como un ingrediente nuevo.
+        nuevo_ingrediente.cantidad = float(nuevo_ingrediente.cantidad)
         self.lista_ingredientes.append(nuevo_ingrediente)
 
     def eliminar_ingrediente(self, nombre_ingrediente: str):
@@ -22,20 +29,28 @@ class Stock:
         ]
 
     def verificar_stock(self, menu):
-        # Definición True por default: Se define False si no se cumplen las condiciones
         suficiente_stock = True
-        if self.lista_ingredientes == []:
+    
+        # Si la lista de inventario está completamente vacía, es imposible preparar algo.
+        if not self.lista_ingredientes:
             suficiente_stock = False
+
+        # Itera sobre cada ingrediente que el menú necesita.
         for ingrediente_necesario in menu.ingredientes:
-            print(ingrediente_necesario)
+            # Busca el ingrediente necesario dentro de la lista del inventario.
             for ingrediente_stock in self.lista_ingredientes:
+                # Compara los nombres para encontrar una coincidencia.
                 if ingrediente_necesario.nombre == ingrediente_stock.nombre:
+                    # Si se encuentra, verifica si la cantidad en stock es menor a la requerida.
                     if int(ingrediente_stock.cantidad) < int(ingrediente_necesario.cantidad):
+                        # Si un solo ingrediente no es suficiente, retorna False inmediatamente.
                         return False
+        
+            # Si el stock está vacío, rompe el bucle principal para optimizar.
             if not suficiente_stock:
                 break
-        if suficiente_stock == True:
-            return True
+        # Si el bucle termina sin haber retornado False, significa que todos los ingredientes están disponibles.
+        return True
 
     def actualizar_stock(self, nombre_ingrediente: str, nueva_cantidad: float):
         """
