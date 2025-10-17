@@ -219,7 +219,38 @@ class AplicacionConPestanas(ctk.CTk):
         self.pdf_viewer_boleta = None
 
     def mostrar_boleta(self):
-        pass
+        pdf_path = "boleta.pdf"
+        
+        # Verificar si el archivo PDF existe
+        if not os.path.exists(pdf_path):
+            CTkMessagebox(
+                title="Aviso", message="Primero debes generar la boleta en la pestaña 'Pedido'.", icon="warning")
+            return
+
+        # Elimina el "viewer" anterior si existe
+        if self.pdf_viewer_boleta is not None:
+            try:
+                self.pdf_viewer_boleta.pack_forget()
+                self.pdf_viewer_boleta.destroy()
+            except Exception:
+                pass
+            self.pdf_viewer_boleta = None
+            
+        # Crea el nuevo "viewer"
+        try:
+            abs_pdf = os.path.abspath(pdf_path)
+            self.pdf_viewer_boleta = CTkPDFViewer(
+                self.pdf_frame_boleta, 
+                file=abs_pdf,
+                page_width=400, # Ajusta el tamano para que se vea bien en el frame
+                page_height=500
+            )
+            self.pdf_viewer_boleta.pack(expand=True, fill="both")
+            
+        except Exception as e:
+            CTkMessagebox(
+                title="Error", message=f"No se pudo mostrar el archivo PDF de la boleta.\n{e}", icon="warning")
+
 
     def configurar_pestana_Stock(self):
         frame_stock = self.tabview.tab("Stock")
@@ -326,7 +357,38 @@ class AplicacionConPestanas(ctk.CTk):
         self.on_tab_change()
 
     def generar_boleta(self):
-        pass
+        # Verifico si hay elementos en el pedido
+        if not self.pedido.menus:
+            CTkMessagebox(
+                title="Aviso", message="El pedido está vacío. Agrega menús antes de generar la boleta.", icon="warning")
+            return
+
+        # Crear una instancia del Facade (que ya esta importado)
+        boleta_facade = BoletaFacade(self.pedido)
+
+        # Generar el PDF y obtener la ruta (BoletaFacade.generar_boleta() es el que se encarga de esto)
+        try:
+            # La funcion generar_boleta en BoletaFacade ahora va a retornar la ruta del archivo
+            ruta_pdf = boleta_facade.generar_boleta()
+            
+            # Limpiar el pedido despues de generar la boleta
+            self.pedido.menus = []
+            
+            # Actualizar la interfaz de usuario
+            self.actualizar_treeview_pedido()
+            self.label_total.configure(text="Total: $0.00")
+            
+            CTkMessagebox(
+                title="Exito", message=(os.path.basename(ruta_pdf)), icon="check")
+            
+            # Opcionalmente, cambiar a la pestana de boleta y mostrarla asi automaticamente
+            self.tabview.set("Boleta")
+            self.mostrar_boleta()
+
+        except Exception as e:
+            CTkMessagebox(
+                title="Error", message=f"Ocurrio un error al generar la boleta.\n{e}", icon="cancel")
+
 
     def configurar_pestana_pedido(self):
         frame_superior = ctk.CTkFrame(self.tab2)
@@ -360,7 +422,7 @@ class AplicacionConPestanas(ctk.CTk):
         self.treeview_pedido.pack(expand=True, fill="both", padx=10, pady=10)
 
         self.boton_generar_boleta = ctk.CTkButton(
-            frame_inferior, text="Generar Boleta", command=self.generar_boleta)
+            frame_inferior, text="Generar Boleta", command=self.generar_boleta) # Boletilla--------------------
         self.boton_generar_boleta.pack(side="bottom", pady=10)
 
     def crear_tarjeta(self, menu, columna):
