@@ -12,7 +12,7 @@
 \usepackage{hyperref}
 \usepackage{float}
 
-\title {\includegraphics[width=0.4\textwidth]{descarga.png}\\[2ex]{\textbf{Informe Proyecto\\ Restaurante}\\[1.5ex] Programacion II\\[20ex]}}
+\title {\includegraphics[width=0.4\textwidth]{Ing_Uni.jpg}\\[2ex]{\textbf{Informe Proyecto\\ Restaurante}\\[1.5ex] Programacion II\\[20ex]}}
 \author{Diego Hernandez, Benjamin Soto, Eduardo Necul}
 \date{Octubre 2025}
 
@@ -37,39 +37,46 @@
 
 \section{Introduccion}
 
-Se nos hizo entrega un codigo base para la funcion de un restaurante incompleto, en cual nosotros debemos encargarnos de completarlo y refinarlo con la forma de programar \textbf{POO} (programacion orientada a objetos), sin salirnos de las casillas del esqueleto inicial. Ademas nos preucuparemos de de explicar cada cambio aplicado al codigo, que utilidad le dimos a las funciones vacias y el diagrama de clases en base a este.
+Se nos hizo entrega un codigo base para la funcion de un restaurante incompleto, en cual nosotros debemos encargarnos de completarlo y refinarlo con la forma de programar \textbf{POO} (programacion orientada a objetos), sin salirnos de las casillas del esqueleto inicial. Ademas nos preocuparemos de explicar cada cambio aplicado al codigo, que utilidad le dimos a las funciones vacias y el diagrama de clases en base a este.
 
 \section{Cambios y implementaciones}
 
-Apartado donde nos centraremos en explicar que modificamos en el codigo para su mejor compresion y funcionalidad.
+Apartado donde nos centraremos en explicar que modificamos en el codigo para su mejor comprension y funcionalidad.
 
-\subsection{Diagrama de clases del problema}
+\subsection{Diagrama de Clases del problema}
 
-Para visualizar con claridad el problema presentado y su diseño POO, diseñamos un diagrama UML con el objetivo de visualizar las distintas clases utilizadas y sus interrelaciones a través de relaciones (asociación, agrupación, composición) y cardinalidades.
+Para visualizar con claridad el problema presentado y su diseño \textbf{POO}, diseñamos un diagrama UML con el objetivo de visualizar las distintas clases utilizadas y sus interrelaciones a través de relaciones (asociación, agrupación, composición) y cardinalidades.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1.1\textwidth]{Diagrama-Restaurante.drawio.png}
-    \caption{Diagrama de clases de la aplicación.}.
+    \caption{Diagrama de Clases de la aplicación.}.
 \end{figure}
 
 
 
 La clase \textbf{\textit{AplicacionConPestanas}} es la principal clase del programa, ya que es ella la que se usa para configurar la interfaz de CustomTkinter e instanciar, relacionar y modificar el resto de clases del sistema, las cuales se describen a continuación brevemente:
 \begin{itemize}
+
     \item La clase \textit{Stock} es aquella donde se administra la información de ingredientes, y que servirá para determinar la disponibilidad de menúes (o platos) en función de si existen los ingredientes requeridos o no, y tiene una relación de asociación con \textit{AplicacionConPestanas}, ya que pese a que esta última instancia un objeto Stock, no hay un contenedor de los objetos instanciados (lista) y ambas clases son independientes, en la que una referencia a otra.
+    
     \item La clase \textit{Ingrediente} es aquella que configura la información de un ingrediente en base a sus tres atributos principales y que coinciden con el estándar de información del archivo CSV. Es el elemento principal de la clase Stock.
-    \item La clase \texit{CrearMenu} es donde se configura la información de un menú/platillo y se configura en base a objetos Ingredientes, debido a la relación explicada en la clase Stock. 
+    
+    \item La clase \textit{CrearMenu} es donde se configura la información de un menú/platillo y se configura en base a objetos Ingredientes, debido a la relación explicada en la clase Stock.
     \begin{itemize}
         \item[$\rightarrow$] Debido a la relación entre Stock y menúes, los objetos CrearMenu tienen una relación de agregación con los objetos Ingrediente, ya que toman ingredientes determinados y los configuran como parte de sus requisitos (los ingredientes requeridos o que forman parte de CrearMenu deben coincidir con ingredientes existentes en Stock).
         \item[$\rightarrow$] Exclusivamente, esta clase cuenta con una relación de abstracción + implementación con la clase IMenu, la cual corresponde a una interfaz que verifica que la construcción de CrearMenu cumpla los criterios solicitados.
     \end{itemize}
-    \item La clase \texit{Pedido} es la clase donde se configura la información del pedido de un cliente en particular.
+    
+    \item La clase \textit{Pedido} es la clase donde se configura la información del pedido de un cliente en particular.
+    
         \begin{itemize}
             \item[$\rightarrow$] La aplicación solo puede trabajar con máximo un Pedido a la vez, o con carencia de este, esto en una relación de asociación, ya que la existencia de ambos es bastante independiente (salvo por la instanciación que depende AplicacionConPestanas).
             \item[$\rightarrow$] La clase Pedido se configura en base a los menúes (CrearMenu) instanciados, y los va agregando en sí, teniendo la posibilidad de tener 1 o muchos menúes (de lo contrario Pedido estaría vacío y no habría datos con los que trabajar).
         \end{itemize}
-    %\item La clase \texit{BoletaFacade} EDU TU PARTE
+        
+    \item La clase \textit{BoletaFacade} tiene el proposito de generar la boleta de compra a partir de la recepcion de un objeto "pedido", pedido cual contiene lo comprado por el cliente en el restaurant.
+    
     \item La clase \textit{CtkPDFViewer} es una clase auxiliar que sirve para crear la visualización del archivo PDF con la función de carga de PDF de \textit{AplicacionConPestanas}.
 \end{itemize}
 
@@ -105,16 +112,14 @@ def actualizar_treeview_stock(self):
 
 Se rellena codigo vacio para darle una utilidad especifica a la pestaña stock porque mas adelante de implemento una funcion que se podria confundir, entonces:
 
-\newpage
-
 \begin{itemize}
     \item Se le da un nombre mas especifico, para no confundir.
     \item Borra completamente la tabla cada que se actualiza para evitar que se dupliquen ingredientes con \verb|self.treeview_stock.delete(...)|
     \item Se ordenan los ingredentes de forma alfabetica para una demostracion mas ordenada y profesional, con \verb|sorted(...)|
-    \item Se rellena la tabla con informacion reciente obtenida por \verb|self.stock.lista_ingredientes|
+    \item Se rellena la tabla con informacion reciente obtenida por\\ \verb|self.stock.lista_ingredientes|
 \end{itemize}
 Con todas estas funcionalidades se logra una funcion correcta,limpia y ordena para la pestaña stock.
-
+\newpage
 \begin{lstlisting}[language=Python, caption={Implementaciones de codigo}, frame=single]
 # antes
 def generar_menus(self):
@@ -132,7 +137,7 @@ def generar_menus(self):
 \end{lstlisting}
 \textbf{Utilidades destacadas:}
 \begin{itemize}
-    \item \verb|for tarjeta in self.frame_tarjetas.winfo_children(): tarjeta.destroy()|es un bucle cual recorre todos los elementos que ya existen dentro de \verb|self.frame_tarjetas| y los borra para una limpieza.
+    \item \verb|for tarjeta in self.frame_tarjetas.winfo_children(): tarjeta.destroy()|\\es un bucle el cual recorre todos los elementos que ya existen dentro de\\ \verb|self.frame_tarjetas| y los borra para una limpieza.
     \item \begin{lstlisting}
         listaMenus = get_default_menus()
         ...
@@ -441,7 +446,7 @@ Esta función sirve para verificar si tienes suficientes ingredientes en tu inve
 \end{lstlisting}
 Codigo importante para la funcion de la ventana nueva para manipular el stock de un ingrediente de una manera mas comoda.
 \newpage
-\textbf{funcion obtener elementos menu}
+\textbf{Funcion obtener elementos menu}
 \begin{lstlisting}[language=Python, caption={Cambio de codigo}, frame=single]
     def obtener_elementos_menu(self, umbral: int = 5):
         """
@@ -462,4 +467,76 @@ Codigo importante para la funcion de la ventana nueva para manipular el stock de
         return lista_para_comprar
 \end{lstlisting}
 Funcion importante para la ventana que te avisa sobre los ingredientes con stock muy bajo.
+\newpage
+\textbf{Funcion de generar boleta}
+\begin{lstlisting}[language=Python, caption={Cambio de codigo}, frame=single]
+    def generar_boleta(self):
+    # Verifica si hay elementos en el pedido
+    if not self.pedido.menus:
+        CTkMessagebox(
+            title="Aviso", message="El pedido esta vacio. Agrega menus antes de generar la boleta.", icon="warning")
+        return
+    
+    # Crear una instancia del Facade (que ya esta importado)
+    boleta_facade = BoletaFacade(self.pedido)
+    
+    # Generar el PDF y obtener la ruta (BoletaFacade.generar_boleta() es el que se encarga de esto)
+    try:
+        # La funcion generar_boleta en BoletaFacade ahora va a retornar la ruta del archivo
+        ruta_pdf = boleta_facade.generar_boleta()
+        
+        # Limpiar el pedido despues de generar la boleta
+        self.pedido.menus = []
+        
+        # Actualizar la interfaz de usuario
+        self.actualizar_treeview_pedido()
+        self.label_total.configure(text="Total: $0.00")
+        
+        CTkMessagebox(
+            title="Exito", message=(os.path.basename(ruta_pdf)), icon="check")
+        
+        # Opcionalmente, cambiar a la pestana de boleta y mostrarla asi automaticamente
+        self.tabview.set("Boleta")
+        self.mostrar_boleta()
+    
+    except Exception as e:
+        CTkMessagebox(
+            title="Error", message=f"Ocurrio un error al generar la boleta.\n{e}", icon="cancel")
+\end{lstlisting}
+\newpage
+\textbf{Funcion de mostrar boleta}
+\begin{lstlisting}[language=Python, caption={Cambio de codigo}, frame=single]
+    def mostrar_boleta(self):
+    pdf_path = "boleta.pdf"
+    
+    # Verificar si el archivo PDF existe
+    if not os.path.exists(pdf_path):
+        CTkMessagebox(
+            title="Aviso", message="Primero debes generar la boleta en la pestana 'Pedido'.", icon="warning")
+        return
+
+    # Elimina el "viewer" anterior si existe
+    if self.pdf_viewer_boleta is not None:
+        try:
+            self.pdf_viewer_boleta.pack_forget()
+            self.pdf_viewer_boleta.destroy()
+        except Exception:
+            pass
+        self.pdf_viewer_boleta = None
+        
+    # Crea el nuevo "viewer"
+    try:
+        abs_pdf = os.path.abspath(pdf_path)
+        self.pdf_viewer_boleta = CTkPDFViewer(
+            self.pdf_frame_boleta, 
+            file=abs_pdf,
+            page_width=400, # Ajusta el tamano para que se vea bien en el frame
+            page_height=500
+        )
+        self.pdf_viewer_boleta.pack(expand=True, fill="both")
+        
+    except Exception as e:
+        CTkMessagebox(
+            title="Error", message=f"No se pudo mostrar el archivo PDF de la boleta.\n{e}", icon="warning")
+\end{lstlisting}
 \end{document}
