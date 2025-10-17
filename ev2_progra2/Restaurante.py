@@ -108,17 +108,35 @@ class AplicacionConPestanas(ctk.CTk):
         self.actualizar_treeview_stock()
 
     def cargar_csv(self):
-        # Apertura normal del archivo
-        path = filedialog.askopenfile(
-            filetypes=[("CSV files", "*.csv"), ("All files", "*.*")])
-        self.df_csv = pd.read_csv(path, encoding="UTF-8-SIG")
-        # Extracción del BOM
-        for columna in self.df_csv.columns:
-            new_column_name = re.sub(r"[^0-9a-zA-Z.,-/_ ]", "", columna)
-            self.df_csv.rename(
-                columns={columna: new_column_name}, inplace=True)
-        # Muestra en tabla
-        self.mostrar_dataframe_en_tabla(self.df_csv)
+        try:
+            # Apertura normal del archivo
+            path = filedialog.askopenfile(
+                filetypes=[("CSV files", "*.csv"), ("All files", "*.*")])
+            self.df_csv = pd.read_csv(path, encoding="UTF-8-SIG")
+            # Extracción del BOM
+            for columna in self.df_csv.columns:
+                new_column_name = re.sub(r"[^0-9a-zA-Z.,-/_ ]", "", columna)
+                self.df_csv.rename(
+                    columns={columna: new_column_name}, inplace=True)
+            # Verificación de estándares del CSV
+            if len(self.df_csv.columns) != 3:
+                raise Exception
+            elif self.df_csv.columns[0].upper() != "nombre".upper():
+                raise Exception
+            elif self.df_csv.columns[1].upper() != "unidad".upper():
+                raise Exception
+            elif self.df_csv.columns[2].upper() != "cantidad".upper():
+                raise Exception
+            # Muestra en tabla
+            self.mostrar_dataframe_en_tabla(self.df_csv)
+        # Error de archivo
+        except UnicodeDecodeError:
+            CTkMessagebox(
+                title="Error", message="Error al cargar el archivo.", icon="warning")
+            return
+        except:
+            CTkMessagebox(
+                title="Error", message="El archivo no cumple con los estándares de ingreso\nde stock.", icon="warning")
 
     def mostrar_dataframe_en_tabla(self, df):
         if self.tabla_csv:
@@ -248,7 +266,7 @@ class AplicacionConPestanas(ctk.CTk):
         ctk.CTkLabel(frame_formulario, text="Unidad:").grid(
             row=0, column=2, padx=5, pady=5)
         self.combo_unidad = ctk.CTkComboBox(
-            frame_formulario, values=["unid", "kg"])
+            frame_formulario, values=["unid", "kg"],state="readonly")
         self.combo_unidad.set("unid")
         self.combo_unidad.grid(row=0, column=3, padx=5, pady=5)
 
@@ -463,12 +481,24 @@ class AplicacionConPestanas(ctk.CTk):
             return False
 
     def validar_cantidad(self, cantidad):
-        if cantidad.isdigit():
-            return True
-        else:
-            CTkMessagebox(title="Error de Validación",
-                          message="La cantidad debe ser un número entero positivo.", icon="warning")
+        # No debe ser un numero vacio
+        if not cantidad.strip():
+            CTkMessagebox(title="Error de Cantidad", message="El campo de cantidad no puede estar vacío.", icon="cancel")
             return False
+
+        # Debe ser un número válido
+        try:
+            cantidad_num = float(cantidad)
+        except ValueError:
+            CTkMessagebox(title="Error de Cantidad", message="La cantidad debe ser un número válido (ej: 10 o 5.5).", icon="cancel")
+            return False
+
+        # Debe ser un numero mayor a 0
+        if cantidad_num <= 0:
+            CTkMessagebox(title="Error de Cantidad", message="La cantidad debe ser un número mayor que cero.", icon="cancel")
+            return False
+
+        return True
 
     def ingresar_ingrediente(self):
         nombre = self.entry_nombre.get()

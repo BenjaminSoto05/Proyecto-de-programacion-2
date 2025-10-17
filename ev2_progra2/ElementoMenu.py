@@ -6,7 +6,7 @@ from IMenu import IMenu
 
 
 @dataclass
-class CrearMenu(IMenu):
+class CrearMenu():
     nombre: str
     ingredientes: List[Ingrediente]
     precio: float = 0.0

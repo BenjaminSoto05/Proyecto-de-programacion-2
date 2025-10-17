@@ -1,8 +1,10 @@
 # IMenu.py
-from typing import Protocol, List, Optional
+from typing import Protocol, List, Optional, runtime_checkable
 from Ingrediente import Ingrediente
 from Stock import Stock
 
+
+@runtime_checkable
 class IMenu(Protocol):
-    """debes rellenar la Interfaz para los elementos del menú."""
-    pass
+    def esta_disponible(self, stock) -> bool:
+        ...
